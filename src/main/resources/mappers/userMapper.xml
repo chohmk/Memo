@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.memo.user.dao.UserDAO">
+ 	<select id="existLoginId" parameterType="String" resultType="boolean">
+ 		SELECT 
+ 			COUNT(*)
+ 		FROM
+ 			`user`
+ 		WHERE
+ 			`loginId` = #{loginId}
+ 	</select>
+ 	
+ 	
+ 	<insert id="insertUser" parameterType="map">
+ 		INSERT INTO `user`
+ 		(
+			`loginId`
+			,`password`
+			,`name`
+			,`email`
+			,`createdAt`
+			,`updatedAt`
+		)
+		VALUES
+		(
+			#{loginId}
+			, #{password}
+			, #{name}
+			, #{email}
+			, NOW()
+			, NOW()
+		)
+ 			
+ 	</insert>
+ </mapper>
