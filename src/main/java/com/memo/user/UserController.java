@@ -44,5 +44,15 @@ public class UserController {
 		
 		return "redirect:/user/sign_in_view";	// 로그아웃 후 로그인 페이지로 이동
 	}
-
+	
 }
+
+
+
+
+
+
+
+
+
+
