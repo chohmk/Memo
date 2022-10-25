@@ -37,6 +37,8 @@ public class PostController {
 		model.addAttribute("viewName", "post/postCreate");
 		return "template/layout";
 	}
+	
+	
 }
 
 

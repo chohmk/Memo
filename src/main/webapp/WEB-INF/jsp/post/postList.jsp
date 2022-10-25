@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>	
 
 <div class="d-flex justify-content-center">
 	<div class="w-50">
@@ -15,12 +17,14 @@
 				</tr>
 			</thead>
 			<tbody>
+			<c:forEach var="post">
 				<tr>
 					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
+			</c:forEach>
 			</tbody>
 		</table>
 

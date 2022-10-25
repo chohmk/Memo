@@ -44,4 +44,23 @@ public class PostRestController {
 		
 		return result;
 	}
+	
+	@PostMapping("/postList")
+	public Map<String, Object> postList(
+			@RequestParam("subject") String subject,
+			@RequestParam(value="content", required=false) String content,
+			@RequestParam(value="file", required=false) MultipartFile file,
+			HttpSession session) {
+		
+		String userLoginId = (String)session.getAttribute("userLoginId");
+		Integer userId = (Integer)session.getAttribute("userId");
+		
+		int row = postBO.getPostList(0, userLoginId, subject, content, file);
+		
+		// DB select
+		Map<String, Object> result = new HashMap<>();
+		
+		
+		return result;
+	}
 }

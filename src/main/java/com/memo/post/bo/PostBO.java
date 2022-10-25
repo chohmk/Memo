@@ -1,5 +1,7 @@
 package com.memo.post.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,5 +30,19 @@ public class PostBO {
 		// DB insert => DAO
 		return postDAO.insertPost(userId, subject, content, imagePath);
 		
+	}
+	
+	public int getPostList(
+			int userId, 
+			String userLoginId, 
+			String subject, 
+			String content, 
+			MultipartFile file) {
+		String imagePath = null;
+		if (file != null) {
+			imagePath = "fileManagerService.saveFile(userLoginId, file)";
+		}
+		
+		return postDAO.selectPostList(userId, subject, content, imagePath);
 	}
 }
