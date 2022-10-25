@@ -9,3 +9,8 @@
 // java.sql.SQLException
 // Parameter index out of range
 // xmlMapper `id` 오타났엇음.
+
+
+// NullPointerException 
+// Cannot invoke "java.lang.Integer.intValue()" because "userId" is null
+// userId 값이 null 이였음.
