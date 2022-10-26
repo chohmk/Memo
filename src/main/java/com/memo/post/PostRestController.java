@@ -14,9 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.memo.post.bo.PostBO;
 
-@RestController
 @RequestMapping("/post")
+@RestController
 public class PostRestController {
+	
 	@Autowired
 	private PostBO postBO;
 	
@@ -35,31 +36,12 @@ public class PostRestController {
 		
 		Map<String, Object> result = new HashMap<>();
 		if (row > 0) {
-			result.put("code", 100);	// 성공
+			result.put("code", 100); // 성공
 			result.put("result", "success");
 		} else {
-			result.put("cole", 400);	// 실패
+			result.put("code", 400); // 실패
 			result.put("errorMessage", "메모 저장에 실패했습니다. 관리자에게 문의해주세요.");
 		}
-		
-		return result;
-	}
-	
-	@PostMapping("/postList")
-	public Map<String, Object> postList(
-			@RequestParam("subject") String subject,
-			@RequestParam(value="content", required=false) String content,
-			@RequestParam(value="file", required=false) MultipartFile file,
-			HttpSession session) {
-		
-		String userLoginId = (String)session.getAttribute("userLoginId");
-		Integer userId = (Integer)session.getAttribute("userId");
-		
-		int row = postBO.getPostList(0, userLoginId, subject, content, file);
-		
-		// DB select
-		Map<String, Object> result = new HashMap<>();
-		
 		
 		return result;
 	}

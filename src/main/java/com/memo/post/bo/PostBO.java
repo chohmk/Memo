@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.memo.common.FileManagerService;
 import com.memo.post.dao.PostDAO;
+import com.memo.post.model.Post;
 
 @Service
 public class PostBO {
@@ -32,17 +33,13 @@ public class PostBO {
 		
 	}
 	
-	public int getPostList(
-			int userId, 
-			String userLoginId, 
-			String subject, 
-			String content, 
-			MultipartFile file) {
-		String imagePath = null;
-		if (file != null) {
-			imagePath = "fileManagerService.saveFile(userLoginId, file)";
-		}
+	// select
+	public List<Post> getPostListByUserId(int userId) {
 		
-		return postDAO.selectPostList(userId, subject, content, imagePath);
+		return postDAO.selectPostListByUserId(userId);
+	}
+	
+	public Post getPostByPostIdAndUserId(int postId, int userId) {
+		return postDAO.selectPostByPostIdAndUserId(postId, userId);
 	}
 }

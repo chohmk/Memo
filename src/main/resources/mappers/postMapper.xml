@@ -24,7 +24,7 @@
  		)
  	</insert>
  	
- 	<select id="selectPostList" parameterType="map" resultType="com.memo.post.model.Post">
+ 	<select id="selectPostListByUserId" parameterType="int" resultType="com.memo.post.model.Post">
  		SELECT
  			`id`
 			,`userId`
@@ -35,5 +35,27 @@
 			,`updatedAt`
 		FROM
 			`post`
+		WHERE
+			`userId` = #{userId}
+		ORDER BY `id` DESC
  	</select>
+ 	
+ 	
+ 	<select id="selectPostByPostIdAndUserId" parameterType="map" resultType="com.memo.post.model.Post">
+ 		SELECT
+ 			`id`
+			,`userId`
+			,`subject`
+			,`content`
+			,`imagePath`
+			,`createdAt`
+			,`updatedAt`
+		FROM
+			`post`
+		WHERE
+			`userId` = #{userId}
+		AND `Id` = #{postId}
+ 	</select>
+ 	
+ 	
  </mapper>

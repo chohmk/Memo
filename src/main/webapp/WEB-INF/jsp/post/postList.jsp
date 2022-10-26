@@ -6,7 +6,7 @@
 <div class="d-flex justify-content-center">
 	<div class="w-50">
 		<h1>글 목록</h1>
-
+		
 		<table class="table">
 			<thead>
 				<tr>
@@ -17,17 +17,17 @@
 				</tr>
 			</thead>
 			<tbody>
-			<c:forEach var="post">
+				<c:forEach items="${postList}" var="post">
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>${post.id}</td>
+					<td><a href="/post/post_detail_view?postId=${post.id}">${post.subject}</a></td>
+					<td><fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd a HH:mm:ss" /></td>
+					<td><fmt:formatDate value="${post.updatedAt}" pattern="yyyy-MM-dd a HH:mm:ss" /></td>
 				</tr>
-			</c:forEach>
+				</c:forEach>
 			</tbody>
 		</table>
-
+		
 		<div class="d-flex justify-content-end">
 			<a href="/post/post_create_view" class="btn btn-warning">글쓰기</a>
 		</div>
