@@ -3,7 +3,6 @@ package com.memo.user;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +79,7 @@ public class UserRestController {
 	public Map<String, Object> signIn(
 			@RequestParam("loginId") String loginId,
 			@RequestParam("password") String password,
-			HttpServletRequest request) {
+			HttpSession session) {
 		// password 해싱 	-> DB에서 id, 해싱된 비번으로 가져와 본다.
 		//				    있으면 로그인, 없으면 잘못된 정보
 		String encryptPassword = EncryptUtils.md5(password);
@@ -91,7 +90,7 @@ public class UserRestController {
 			result.put("result", "success");
 			
 			// 세션에 유저 정보를 담는다.(로그인 상태 유지)
-			HttpSession session = request.getSession();
+			
 			session.setAttribute("userName", user.getName());
 			session.setAttribute("userLoginId", user.getLoginId());
 			session.setAttribute("userId", user.getId());
