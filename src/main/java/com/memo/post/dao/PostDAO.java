@@ -30,4 +30,7 @@ public interface PostDAO {
 			@Param("userId") int userId);
 	
 	public Post selectPostByPostId(int postId);
+	
+	// 삭제
+	public void deletePostByPostId(int id);
 }
