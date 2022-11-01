@@ -26,20 +26,54 @@ public class PostController {
 	 * @return
 	 */
 	@RequestMapping("/post_list_view")
-	public String postListView(HttpSession session, Model model) {
+	public String postListView(
+			// 페이징
+			@RequestParam(value="prevId", required=false) Integer prevIdParam,
+			@RequestParam(value="nextId", required=false) Integer nextIdParam,
+			// ---
+			HttpSession session, 
+			Model model) {
 		Integer userId = (Integer)session.getAttribute("userId"); // 로그인이 풀려있으면 null이기 때문에 Integer
 		if (userId == null) {
 			// 로그인이 풀려있으면 로그인 페이지로 리다이렉트
 			return "redirect:/user/sign_in_view";
 		}
 		
-		List<Post> postList = postBO.getPostListByUserId(userId);
+		List<Post> postList = postBO.getPostListByUserId(userId, prevIdParam, nextIdParam);
+		int prevId = 0;
+		int nextId = 0;
+		if (postList.isEmpty() == false) {
+			// 페이징 postList가 비어있을 때 에러 방지
+			prevId = postList.get(0).getId();
+			nextId = postList.get(postList.size() - 1).getId();
+			
+			// 마지막 페이지 (next 방향의 끝)인가?
+			// 제일 작은 숫자(postId)와 nextId가 같으면 마지막 페이지이다.
+			if(postBO.isLastPage(nextId, userId)) {
+				nextId = 0;
+			}
+			
+			// 앞 페이지(prev 방향의 끝)인가?
+			// 제일 큰 숫자(postId)와 prevId가 같으면 앞페이지이다.
+			if (postBO.isFirstPage(prevId, userId)) {
+				prevId = 0;
+			}
+		}
 		
+		model.addAttribute("prevId", prevId);	// 가져온 포스트 중 가장 앞쪽(큰 id)
+		model.addAttribute("nextId", nextId);	// 가져온 포스트 중 가장 뒤쪽(작은 id)
 		model.addAttribute("viewName", "post/postList");
 		model.addAttribute("postList", postList);
+		
 		return "template/layout";
 	}
 	
+	/** 
+	 * 글쓰기 API
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/post_create_view")
 	public String postCreateView(HttpSession session, Model model) {
 		Integer userId = (Integer)session.getAttribute("userId");
@@ -51,6 +85,13 @@ public class PostController {
 		return "template/layout";
 	}
 	
+	/**
+	 * 수정 API
+	 * @param postId
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/post_detail_view")
 	public String postDetailView(
 			@RequestParam("postId") int postId,
