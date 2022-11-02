@@ -19,7 +19,6 @@ public class PostBO {
 	//private Logger log = LoggerFactory.getLogger(PostBO.class);
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	// 페이징
 	private static final int POST_MAX_SIZE = 3;
 	
 	@Autowired
@@ -69,15 +68,13 @@ public class PostBO {
 	}
 	
 	public List<Post> getPostListByUserId(int userId, Integer prevId, Integer nextId) {
-		// 페이징 
-		// 게시글 번호: 10 9 8 | 7 6 5 | 4 3 2 | 1
-		// 만약 4 3 2 페이지에 있을 때
-		// 1) 이전 :	정방향 4보다 큰 3개(5 6 7) => 코드에서 reverse (7 6 5)
-		// 2) 다음 : 2보다 작은 3개
+		// 게시글 번호:   10 9 8 | 7 6 5 | 4 3 2 | 1
+		//   만약 4 3 2 페이지에 있을 때
+		//   1) 이전 : 정방향 4보다 큰 3개(5 6 7) => 코드에서 reverse(7 6 5)   
+		//   2) 다음 : 2보다 작은 3개
 		
-
-		Integer standardId = null; 		// 기준이되는 아이디
-		String direction = null;		// 방향
+		Integer standardId = null; // 기준이 되는 id(이전 또는 다음)
+		String direction = null; // 방향
 		if (prevId != null) {
 			// 이전 클릭
 			standardId = prevId;
@@ -92,21 +89,19 @@ public class PostBO {
 			direction = "next";
 		}
 		
-		// 첫페이지일 때는 standardId = null, 다음일 때는 값이 있음
+		// 첫페이지일 때는 standardId가 null, 다음일 때는 값이 있음
 		return postDAO.selectPostListByUserId(userId, standardId, direction, POST_MAX_SIZE);
 	}
 	
-	// 페이징용
-	public boolean isLastPage(int nextId, int userId) {	// next 방향의 끝인가?
+	public boolean isLastPage(int nextId, int userId) {  // next 방향의 끝인가?
 		// nextId와 제일 작은 id가 같은가?
 		int postId = postDAO.selectPostIdByUserIdAndSort(userId, "ASC");
-		return postId == nextId;	// 같으면 마지막 페이지
+		return postId == nextId; // 같으면 마지막 페이지
 	}
 	
-	// 페이징용
 	public boolean isFirstPage(int prevId, int userId) { // prev 방향의 끝인가?
 		int postId = postDAO.selectPostIdByUserIdAndSort(userId, "DESC");
-		return postId == prevId;
+		return postId == prevId; // 같으면 앞 페이지
 	}
 	
 	public Post getPostByPostIdAndUserId(int postId, int userId) {
@@ -117,15 +112,15 @@ public class PostBO {
 		return postDAO.selectPostByPostId(postId);
 	}
 	
-	// 삭제 
 	public void deletePostByPostId(int id) {
-		// 기존 글 가져오기
+		// 기존글 가져오기
 		Post post = getPostByPostId(id);
 		if (post == null) {
 			log.warn("[delete post] 삭제할 게시글이 없습니다. postId:{}", id);
 			return;
 		}
-		// 업로드 되었던 imagePath가 존재하면 이미지 삭제
+		
+		// 업로드 되었던 이미지패스가 존재하면 이미지 삭제
 		if (post.getImagePath() != null) {
 			fileManagerService.deleteFile(post.getImagePath());
 		}
